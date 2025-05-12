@@ -1,17 +1,40 @@
-function EventCard({ title, image, city, country, date }) {
-    return (
-      <div style={{ border: '1px solid #ccc', padding: '1rem', marginBottom: '1rem' }}>
-        <img
-          src={image}
-          alt={title}
-          style={{ width: '100%', maxHeight: '200px', objectFit: 'cover' }}
-        />
-        <h2>{title}</h2>
-        <p>{city}, {country}</p>
-        <p>{date}</p>
+import '../styles/EventCard.css';
+
+function EventCard({ 
+  id, 
+  tittel, 
+  bilde, 
+  by, 
+  land, 
+  dato, 
+  klikkbar = true, 
+ 
+}) {
+ 
+  const content = (
+    <div className="event-card">
+      <img 
+        src={bilde || 'https://via.placeholder.com/300x200?text=Ingen+bilde'} 
+        alt={tittel} 
+        className="event-image"
+        loading="lazy"
+      />
+      <div className="event-details">
+        <h3>{tittel}</h3>
+        {by && land && <p className="location">{by}, {land}</p>}
+        {dato && <p className="date">{dato}</p>}
+   
       </div>
-    );
-  }
-  
-  export default EventCard;
-  
+    </div>
+  );
+
+  return klikkbar ? (
+    <div className="event-card-link">
+      {content}
+    </div>
+  ) : (
+    content
+  );
+}
+
+export default EventCard;

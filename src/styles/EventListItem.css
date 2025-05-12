@@ -1,0 +1,134 @@
+/* Base Styles */
+.event-item {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  gap: 15px;
+  position: relative; 
+}
+
+
+.event-image-wrapper {
+  flex-shrink: 0;
+  width: 80px;
+  height: 80px;
+  min-width: 80px; 
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.event-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.event-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.event-title {
+  margin: 0 0 8px 0;
+  font-size: clamp(1rem, 2vw, 1.1rem); 
+  color: #2c3e50;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.event-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 15px; 
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: clamp(0.8rem, 1.5vw, 0.9rem); 
+  color: #7f8c8d;
+}
+
+.meta-item span:not(.icon) {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 120px;
+}
+
+.icon {
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.event-favorite-button {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 5px;
+  transition: all 0.2s;
+  z-index: 1;
+}
+
+/* Hover Effects */
+.event-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.event-favorite-button:hover {
+  transform: scale(1.1);
+}
+
+.event-favorite-button.active {
+  color: #e74c3c;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .event-item {
+    flex-wrap: wrap;
+    padding-bottom: 40px; 
+  }
+  
+  .event-image-wrapper {
+    width: 100%;
+    height: 150px;
+    min-width: 100%;
+  }
+  
+  .event-meta {
+    width: 100%;
+    border-radius: 2px;
+  }
+  
+  .meta-item span:not(.icon) {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .event-image-wrapper {
+    height: 120px;
+  }
+  
+  .event-meta {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .event-favorite-button {
+    font-size: 1.3rem;
+  }
+}

@@ -1,0 +1,53 @@
+.dashboard-container {
+    max-width: 400px;
+    margin: 3rem auto;
+    padding: 2rem;
+    background-color: #f4f4f4;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .dashboard-title {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+  }
+  
+  .dashboard-input {
+    width: 100%;
+    padding: 0.6rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    box-sizing: border-box;
+
+  }
+  
+  .dashboard-button {
+    
+    width: 100%;
+    padding: 0.6rem;
+    background-color: #0077cc;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: block; 
+    box-sizing: border-box;
+
+    text-align: center;
+  }
+  
+  .dashboard-button:hover {
+    background-color: #005fa3;
+  }
+  
+  .logged-in-message {
+    text-align: center;
+    margin-top: 3rem;
+  }
+
+  
