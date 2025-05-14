@@ -113,7 +113,7 @@ function EventPage() {
           <div className="tab-content">
             {activeTab === 'info' && (
               <div className="event-info">
-                <p><strong>Sted:</strong> {event._embedded?.venues?.[0]?.city?.name}, {event._embedded?.venues?.[0]?.country?.name}</p>
+                <p><strong>Sted:</strong> {event._embedded?.venues?.[0]?.city?.name} {event._embedded?.venues?.[0]?.country?.name}</p>
                 <p><strong>Adresse:</strong> {event._embedded?.venues?.[0]?.address?.line1}</p>
                 <p><strong>Dato:</strong> {event.dates?.start?.localDate}</p>
                 <p><strong>Tid:</strong> {event.dates?.start?.localTime}</p>
