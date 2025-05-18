@@ -31,7 +31,7 @@ function Dashboard() {
           name,
           age,
           gender,
-           email,
+          email,
           "profileImage": image.asset->url,
           "wishlist": wishlist[]->{
             _id,
@@ -48,6 +48,7 @@ function Dashboard() {
             name,
             "profileImage": image.asset->url,
             "wishlist": wishlist[]->{
+              _id,
               title,
               category
             }
@@ -126,42 +127,50 @@ function Dashboard() {
                 <h2 className="dashboard-title">{userData.name}</h2>
                 <p>Alder: {userData.age}</p>
                 <p>Kjønn: {userData.gender === 'male' ? 'Mann' : userData.gender === 'female' ? 'Kvinne' : 'Annet'}</p>
-              <p>E-mail: {userData.email}</p>
-
-                
+                <p>E-mail: {userData.email}</p>
               </div>
             </div>
-            
 
             <section className="friends-section">
               <h3>Venner</h3>
               {userData.friends && userData.friends.length > 0 ? (
-                userData.friends.map(friend => (
-                  <div key={friend._id} className="friend-card">
-                    <div className="friend-header">
-                      {friend.profileImage && (
-                        <img 
-                          src={`${friend.profileImage}?w=100&h=100&fit=crop`} 
-                          alt={friend.name} 
-                          className="friend-image"
-                        />
-                      )}
-                      <h4>{friend.name}</h4>
-                    </div>
-                    {friend.wishlist && friend.wishlist.length > 0 && (
-                      <>
-                        <p className="common-interests">
-                          Du og {friend.name} ønsker begge å dra på {friend.wishlist[0].title}, hva med å dra sammen?
-                        </p>
-                        <div className="categories">
-                          {friend.wishlist.slice(0, 3).map((item, index) => (
-                            <span key={index} className="category-tag">{item.category}</span>
+                userData.friends.map(friend => {
+                  // Find shared wishes between current user and friend
+                  const sharedWishes = userData.wishlist.filter(userWish => 
+                    friend.wishlist.some(friendWish => friendWish._id === userWish._id)
+                  );
+
+                  return (
+                    <div key={friend._id} className="friend-card">
+                      <div className="friend-header">
+                        {friend.profileImage && (
+                          <img 
+                            src={`${friend.profileImage}?w=100&h=100&fit=crop`} 
+                            alt={friend.name} 
+                            className="friend-image"
+                          />
+                        )}
+                        <h4>{friend.name}</h4>
+                      </div>
+                      
+                      {sharedWishes.length > 0 ? (
+                        <div className="shared-wishes">
+                          <h5>Felles ønsker ({sharedWishes.length}):</h5>
+                          {sharedWishes.map((wish, index) => (
+                            <div key={index} className="wish-item">
+                              <p>
+                                Du og {friend.name} ønsker begge å dra på – hva med å dra sammen på <strong>{wish.title}</strong> 
+                              </p>
+                              <span className="category-tag">{wish.category}</span>
+                            </div>
                           ))}
                         </div>
-                      </>
-                    )}
-                  </div>
-                ))
+                      ) : (
+                        <p>Ingen felles ønsker med {friend.name}</p>
+                      )}
+                    </div>
+                  );
+                })
               ) : (
                 <p>Ingen venner å vise</p>
               )}
@@ -175,7 +184,10 @@ function Dashboard() {
                     <div key={item._id} className="event-item">
                       <h4>{item.title}</h4>
                       <p>Kategori: {item.category}</p>
-            <Link to={`/dashboard/event/${item._id}`}> Se mer om dette ønsket</Link>                      </div>
+                        <Link to={`/dashboard/event/${item._id}`} className="event-link">
+                          Se mer om dette ønsket
+                        </Link>
+                    </div>
                   ))}
                 </div>
               ) : (
@@ -191,8 +203,9 @@ function Dashboard() {
                     <div key={item._id} className="event-item">
                       <h4>{item.title}</h4>
                       <p>Kategori: {item.category}</p>
-            <Link to={`/dashboard/event/${item._id}`}>Se mer om dette ønsket</Link>               
-
+                        <Link to={`/dashboard/event/${item._id}`} className="event-link">
+                         Se mer om dette ønsket
+                        </Link>
                     </div>
                   ))}
                 </div>
@@ -200,12 +213,12 @@ function Dashboard() {
                 <p>Ingen ønsker å vise</p>
               )}
             </section>
+
+            <button onClick={handleLogout} className="dashboard-button logout-button">
+              Logg ut
+            </button>
           </>
         )}
-
-        <button onClick={handleLogout} className="dashboard-button logout-button">
-          Logg ut
-        </button>
       </div>
     </Layout>
   );

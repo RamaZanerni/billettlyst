@@ -18,6 +18,7 @@ function FestivalEventsPage() {
   const [festivalGenres, setFestivalGenres] = useState([]);
   const [uniqueArtists, setUniqueArtists] = useState([]);
 
+   const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
   // Toggle favorite status
   const toggleFavorite = (eventId) => {
     setFavorites(prev => {
@@ -71,18 +72,20 @@ function FestivalEventsPage() {
       
       const searchKeyword = festivalName.replace(/-/g, ' ');
       const response = await fetch(
-        `https://app.ticketmaster.com/discovery/v2/events.json?keyword=${encodeURIComponent(searchKeyword)}&apikey=${API_KEY}&size=50`
+  `/discovery/v2/events.json?keyword=${encodeURIComponent(searchKeyword)}&apikey=${API_KEY}&size=50`
       );
       
       if (!response.ok) throw new Error('Failed to fetch events');
       
       const data = await response.json();
+        await delay(300);
       
       // Check if events exist in the response
       if (!data._embedded?.events || data._embedded.events.length === 0) {
+          await delay(300);
         // Try a more general search if no exact matches found
         const generalResponse = await fetch(
-          `https://app.ticketmaster.com/discovery/v2/events.json?keyword=${encodeURIComponent(searchKeyword.split(' ')[0])}&apikey=${API_KEY}&size=50`
+    `/discovery/v2/events.json?keyword=${encodeURIComponent(searchKeyword.split(' ')[0])}&apikey=${API_KEY}&size=50`
         );
         
         if (!generalResponse.ok) throw new Error('No events found for this festival');

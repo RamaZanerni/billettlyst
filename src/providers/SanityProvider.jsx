@@ -11,4 +11,5 @@ export const SanityProvider = ({ children }) => {
   )
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useSanity = () => useContext(SanityContext)

@@ -19,19 +19,22 @@
 .event-details {
   padding: 15px;
   position: relative;
+  background-color: #cacfbc;
+
+  
 }
 
 .event-details h3 {
   margin: 0 0 10px 0;
   font-size: 1.1rem;
-  white-space: nowrap;
+  white-space: wrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .location, .date {
-  color: #7f8c8d;
-  font-size: 0.9rem;
+  color: #1a5e64;
+  font-size: 1rem;
   margin: 5px 0;
 }
 
@@ -59,4 +62,11 @@
 .event-card-link {
   text-decoration: none;
   color: inherit;
+
+}
+
+
+.event-card-link:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }

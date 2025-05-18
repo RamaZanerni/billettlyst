@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import '../styles/EventCard.css';
+
+import '../styles/FestivalEventCard.css'
 
 function FestivalEventCard({ 
   id, 

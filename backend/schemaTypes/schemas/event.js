@@ -17,6 +17,7 @@ export default {
       options: {
  list: [
           {title: 'Musikk', value: 'musikk'},
+           {title: 'Festival', value: 'festival'},
           {title: 'Sport', value: 'sport'},
           {title: 'Teater/Show', value: 'teater'}
         ]      }

@@ -1,12 +1,13 @@
 .festivalPass .events-grid .event-card-link,
 .artist-card{
-      display: inline-block;
+    display: inline-block;
     width: 30% !important;
     margin: 15px;
 }
 .festival-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  
 }
 
 .festival-image {
@@ -16,12 +17,34 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+
 }
 
 .festival-details {
   padding: 16px;
 }
 
+
+.festival-card-link {
+  display: inline-block;
+   padding: 12px 20px;
+  background-color:  #1e3a8a; 
+  color: #fff;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  margin-top: 12px;
+  margin-bottom: 10px;
+text-align: center;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  
+}
+
+.festival-card-link:hover {
+background-color: #cddbd8;
+  transform: scale(1.05);
+}
 .festival-meta p {
   margin: 4px 0;
   font-size: 0.9rem;
@@ -62,9 +85,10 @@
 .festival-card-contianer {
   text-decoration: none;
   color: inherit;
-  width: auto;
-  margin: 10px 20px;
+
   display: inline-block;
+   width: 300px;
+  margin: 15px;
 }
 
 @media (min-width: 1200px) {
