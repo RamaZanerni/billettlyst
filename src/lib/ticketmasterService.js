@@ -2,8 +2,7 @@
 export async function getEventDetails(eventId, apiKey) {
   try {
     const response = await fetch(
-      `https://app.ticketmaster.com/discovery/v2/events/${eventId}.json?apikey=${apiKey}`
-    );
+    `/discovery/v2/events/${eventId}.json?apikey=${apiKey}`    );
     if (!response.ok) throw new Error('Failed to fetch event details');
     const data = await response.json();
     

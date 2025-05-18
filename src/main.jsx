@@ -7,9 +7,9 @@ import { SanityProvider } from './providers/SanityProvider'
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
+  
     <SanityProvider>
     <App />
     </SanityProvider>
-  </React.StrictMode>
+
 )

@@ -25,6 +25,8 @@ a:hover {
 body {
   margin: 0;
   font-family: sans-serif;
+  height: auto;
+  
 }
 
 h1 {

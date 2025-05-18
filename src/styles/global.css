@@ -1,8 +1,24 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.page-wrapper { 
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.main-content { 
+  flex-grow: 1;
+}
+
 .container {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 1rem;
-    box-sizing: border-box;
+    padding: 0;
+   
+  
   }
   
   .page-title {
@@ -17,3 +33,21 @@
     gap: 1.5rem;
   }
   
+  .footer {
+  text-align: center;
+  padding: 10px;
+  background-color: #cacfbc;
+  color: #080808;
+  font-size: 0.9rem;
+ 
+   
+    
+}
+.footer a {
+ color: #1d7ba7;
+  text-decoration: underline;
+}
+.footer a:hover {
+  text-decoration: underline;
+   color: #33aee7;
+}

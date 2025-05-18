@@ -3,6 +3,8 @@ import { useParams, Link } from 'react-router-dom';
 import { client } from '../lib/sanity';
 import { getEventDetails } from '../lib/ticketmasterService';
 import '../styles/EventDetails.css';
+import Layout from '../components/Layout';
+
 
 export default function EventDetails() {
   const { eventId } = useParams();
@@ -33,9 +35,7 @@ export default function EventDetails() {
         if (sanityEvent.apiId) {
           tmData = await getEventDetails(sanityEvent.apiId, 'c7qLAjGlWre3Sm9jj1V9lpc5Mr5zmlw0');
         }
-        console.log('TM Data:', tmData);
-
-        // 3. دمج البيانات
+     
         setEvent({
           ...sanityEvent,
           title: tmData.title || sanityEvent.title,
@@ -69,7 +69,15 @@ export default function EventDetails() {
   if (loading) return <div className="loading">Laster...</div>;
   if (!event) return <div className="error">Arrangement ikke funnet</div>;
 
-  // تنسيق التاريخ والوقت
+  const categoryLabels = {
+  festival: 'Festival',
+  sport: 'Sport',
+  teater: 'Teater/Show',
+  music: 'Music'
+};
+
+
+  // Date and time format
   const formattedDateTime = new Date(event.date).toLocaleString('nb-NO', {
     weekday: 'long',
     day: 'numeric',
@@ -80,6 +88,7 @@ export default function EventDetails() {
   });
 
   return (
+     <Layout>
     <div className="event-details">
       <div className="event-header">
         <h1>{event.title}</h1>
@@ -109,7 +118,7 @@ export default function EventDetails() {
 
           <div className="info-section">
             <h3>Sjanger</h3>
-            <p>{event.genre || event.category || 'Musikk'}</p>
+        <p>{categoryLabels[event.genre] || categoryLabels[event.category] || 'Musikk'}</p>
           </div>
 
           {event.description && (
@@ -145,5 +154,6 @@ export default function EventDetails() {
 
       <Link to="/dashboard" className="back-button">Tilbake til dashboard</Link>
     </div>
+    </Layout>
   );
 }

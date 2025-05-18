@@ -61,7 +61,7 @@ function CategoryPage() {
         const searchTerm = appliedFilters.keyword.trim() || slug;
 
         // hente events
-        const eventsUrl = new URL('https://app.ticketmaster.com/discovery/v2/events.json');
+const eventsUrl = new URL('/discovery/v2/events.json', window.location.origin); 
         eventsUrl.searchParams.append('apikey', API_KEY);
         eventsUrl.searchParams.append('keyword', searchTerm);
         eventsUrl.searchParams.append('countryCode', appliedFilters.country);
@@ -69,31 +69,34 @@ function CategoryPage() {
         if (appliedFilters.city) eventsUrl.searchParams.append('city', appliedFilters.city);
         if (appliedFilters.date) eventsUrl.searchParams.append('startDateTime', `${appliedFilters.date}T00:00:00Z`);
 
-        const eventsResponse = await fetch(`https://corsproxy.io/?${eventsUrl}`);
+        const delay = (ms) => new Promise(res => setTimeout(res, ms));
+const eventsResponse = await fetch(eventsUrl);
         const eventsData = await eventsResponse.json();
         setEvents(eventsData._embedded?.events || []);
+        await delay(300);
 
         // hente attrsksjoner
-        const attractionsUrl = new URL('https://app.ticketmaster.com/discovery/v2/attractions.json');
+const attractionsUrl = new URL('/discovery/v2/attractions.json', window.location.origin);
         attractionsUrl.searchParams.append('apikey', API_KEY);
         attractionsUrl.searchParams.append('keyword', searchTerm);
         attractionsUrl.searchParams.append('countryCode', appliedFilters.country);
         attractionsUrl.searchParams.append('size', 12);
 
-        const attractionsResponse = await fetch(`https://corsproxy.io/?${attractionsUrl}`);
+const attractionsResponse = await fetch(attractionsUrl);
         const attractionsData = await attractionsResponse.json();
         setAttractions(attractionsData._embedded?.attractions || []);
-
+   await delay(300);
         //  hente eventssteder
-        const venuesUrl = new URL('https://app.ticketmaster.com/discovery/v2/venues.json');
+const venuesUrl = new URL('/discovery/v2/venues.json', window.location.origin);
         venuesUrl.searchParams.append('apikey', API_KEY);
         venuesUrl.searchParams.append('countryCode', appliedFilters.country);
         venuesUrl.searchParams.append('size', 12);
         if (appliedFilters.city) venuesUrl.searchParams.append('city', appliedFilters.city);
 
-        const venuesResponse = await fetch(`https://corsproxy.io/?${venuesUrl}`);
+const venuesResponse = await fetch(venuesUrl);
         const venuesData = await venuesResponse.json();
         setVenues(venuesData._embedded?.venues || []);
+           await delay(300);
 
       } catch (error) {
         console.error('Error fetching data:', error);

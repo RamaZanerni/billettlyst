@@ -1,7 +1,7 @@
 .container {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 0;
 }
 
 .page-title {
@@ -30,6 +30,7 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
+  
 }
 
 .les-mer-button {
@@ -42,10 +43,11 @@
   cursor: pointer;
   width: 100%;
   transition: background-color 0.3s;
-  font-size: 13px;
+  font-size: 100px;
  
   
 }
+
 
 .les-mer-button:hover {
   background-color: #1a252f;
@@ -60,22 +62,27 @@
 
 .city-button {
   padding: 8px 16px;
-  background-color: #ecf0f1;
+  background-color: #65bcd5;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: all 0.3s;
+  font-size: 20px;
+
+ 
 }
 
 .city-button.active {
-  background-color: #3498db;
-  color: white;
+  background-color: #b1d2e8;
+  color: rgb(16, 15, 15);
+  box-shadow: #1a252f 2px 2px;
 }
 
 .event-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 25px;
+  
 }
 
 .no-events {
@@ -93,6 +100,15 @@
   margin: 20px auto;
 }
 
+ .date {
+  color: #011012;
+  font-size: 1rem;
+  margin: 5px 0;
+}
+
+.location{
+  color: #010e0f;
+}
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import EventCard from '../components/EventCard';
 import FestivalEventCard from '../components/FestivalCard';
 import Layout from '../components/Layout';
-import '../styles/global.css';
+
 import '../styles/Hjem.css';
 
 const API_KEY = 'c7qLAjGlWre3Sm9jj1V9lpc5Mr5zmlw0';
@@ -18,25 +18,25 @@ function Hjem() {
   const [error, setError] = useState(null);
 
   const targetFestivals = [
-    { 
+    {
       id: 'findings',
       name: 'Findings Festival',
       keyword: 'Findings Festival',
       fallbackImage: 'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
     },
-    { 
+    {
       id: 'neon',
       name: 'NEON Festival',
       keyword: 'NEON Festival',
       fallbackImage: 'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
     },
-    { 
+    {
       id: 'skeikampen',
       name: 'Skeikampenfestivalen',
-      keyword: 'Skeikampen festivalen 2025',
+      keyword: 'Skeikampen festivalen',
       fallbackImage: 'https://images.unsplash.com/photo-1472653431158-6364773b2a56?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
     },
-    { 
+    {
       id: 'tons-of-rock',
       name: 'Tons of Rock',
       keyword: 'Tons of Rock',
@@ -47,110 +47,56 @@ function Hjem() {
   const storbyer = ['Oslo', 'Berlin', 'London', 'Paris'];
 
   useEffect(() => {
+
+      console.log("✅ fetchFestivals ran (React StrictMode may cause double run in development)");
+
+    const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
     const lagrede = JSON.parse(localStorage.getItem('favoritter')) || [];
     settFavoritter(lagrede);
 
     const fetchFestivals = async () => {
+      setLoading(true);
+      setError(null);
+      const fetchedFestivalData = [];
+
       try {
-        const results = await Promise.all(
-          targetFestivals.map(async (festival) => {
-            try {
-              // Special handling for Skeikampenfestivalen
-              if (festival.id === 'skeikampen') {
-                return {
-                  ...festival,
-                  eventData: {
-                    id: festival.id,
-                    name: festival.name,
-                    images: [{ url: festival.fallbackImage }],
-                    _embedded: {
-                      venues: [{
-                        city: { name: 'Skeikampen' },
-                        country: { name: 'Norway' }
-                      }]
-                    },
-                    dates: { start: { localDate: '2023-08-10' } },
-                    classifications: [{
-                      genre: { name: 'Music Festival' }
-                    }]
-                  }
-                };
-              }
+        for (const festival of targetFestivals) {
+          await delay(300); //Delay between each request
 
-              // Special handling for NEON Festival
-              if (festival.id === 'neon') {
-                const res = await fetch(
-                  `https://corsproxy.io/?https://app.ticketmaster.com/discovery/v2/events.json?apikey=${API_KEY}&keyword=${encodeURIComponent(festival.keyword)}&size=1`
-                );
-                const data = await res.json();
-                
-                const neonEvent = data._embedded?.events?.find(e => 
-                  e.name.toLowerCase().includes('neon festival')
-                );
+          let eventData;
 
-                if (!neonEvent) {
-                  return {
-                    ...festival,
-                    eventData: {
-                      id: festival.id,
-                      name: festival.name,
-                      images: [{ url: festival.fallbackImage }],
-                      _embedded: {
-                        venues: [{
-                          city: { name: 'Oslo' },
-                          country: { name: 'Norway' }
-                        }]
-                      },
-                      dates: { start: { localDate: 'Coming soon' } },
-                      classifications: [{
-                        genre: { name: 'Music Festival' }
-                      }]
-                    }
-                  };
-                }
-
-                return {
-                  ...festival,
-                  eventData: neonEvent
-                };
-              }
-
-              // Default handling for other festivals
+          try {
+            if (festival.id === 'skeikampen') {
+              eventData = {
+                id: festival.id,
+                name: festival.name,
+                images: [{ url: festival.fallbackImage }],
+                _embedded: {
+                  venues: [{
+                    city: { name: 'Skeikampen' },
+                    country: { name: 'Norway' }
+                  }]
+                },
+                dates: { start: { localDate: '2023-08-10' } },
+                classifications: [{ genre: { name: 'Music Festival' } }]
+              };
+            } else {
               const res = await fetch(
-                `https://corsproxy.io/?https://app.ticketmaster.com/discovery/v2/events.json?apikey=${API_KEY}&keyword=${encodeURIComponent(festival.keyword)}&size=1`
+                `/discovery/v2/events.json?apikey=${API_KEY}&keyword=${encodeURIComponent(festival.keyword)}&size=1`
               );
               const data = await res.json();
-              
-              if (!data._embedded?.events?.[0]) {
-                return {
-                  ...festival,
-                  eventData: {
-                    id: festival.id,
-                    name: festival.name,
-                    images: [{ url: festival.fallbackImage }],
-                    _embedded: {
-                      venues: [{
-                        city: { name: 'Various' },
-                        country: { name: 'Various' }
-                      }]
-                    },
-                    dates: { start: { localDate: 'Coming soon' } },
-                    classifications: [{
-                      genre: { name: 'Music Festival' }
-                    }]
-                  }
-                };
+
+              if (festival.id === 'neon') {
+                eventData = data._embedded?.events?.find(e =>
+                  e.name.toLowerCase().includes('neon festival')
+                );
+              } else {
+                eventData = data._embedded?.events?.[0];
               }
-              
-              return {
-                ...festival,
-                eventData: data._embedded.events[0]
-              };
-            } catch (err) {
-              console.error(`Error fetching ${festival.name}:`, err);
-              return {
-                ...festival,
-                eventData: {
+
+              if (!eventData) {
+                eventData = {
                   id: festival.id,
                   name: festival.name,
                   images: [{ url: festival.fallbackImage }],
@@ -161,15 +107,39 @@ function Hjem() {
                     }]
                   },
                   dates: { start: { localDate: 'Coming soon' } },
-                  classifications: [{
-                    genre: { name: 'Music Festival' }
-                  }]
-                }
-              };
+                  classifications: [{ genre: { name: 'Music Festival' } }]
+                };
+              }
             }
-          })
-        );
-        settFestivaler(results);
+
+            fetchedFestivalData.push({
+              ...festival,
+              eventData
+            });
+
+          } catch (err) {
+            console.error(`Feil ved henting av ${festival.name}:`, err);
+            fetchedFestivalData.push({
+              ...festival,
+              eventData: {
+                id: festival.id,
+                name: festival.name,
+                images: [{ url: festival.fallbackImage }],
+                _embedded: {
+                  venues: [{
+                    city: { name: 'Various' },
+                    country: { name: 'Various' }
+                  }]
+                },
+                dates: { start: { localDate: 'Coming soon' } },
+                classifications: [{ genre: { name: 'Music Festival' } }]
+              }
+            });
+          }
+        }
+
+        settFestivaler(fetchedFestivalData);
+
       } catch (err) {
         setError('Kunne ikke hente festivaldata');
         console.error('Fetch error:', err);
@@ -182,10 +152,13 @@ function Hjem() {
   }, []);
 
   useEffect(() => {
+      const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
     const hentByEvents = async () => {
       try {
+          await delay(800); 
         const res = await fetch(
-          `https://corsproxy.io/?https://app.ticketmaster.com/discovery/v2/events.json?apikey=${API_KEY}&city=${valgtBy}&size=10`
+          `/discovery/v2/events.json?apikey=${API_KEY}&city=${valgtBy}&size=10`
         );
         const data = await res.json();
         settByEvents(data._embedded?.events || []);
@@ -233,7 +206,7 @@ function Hjem() {
     <Layout>
       <div className="container">
         <h2 className="page-title">SOMMERENS FESTIVALER!</h2>
-        
+
         <div className="festival-row">
           {festivaler.map((festival) => {
             const event = festival.eventData;

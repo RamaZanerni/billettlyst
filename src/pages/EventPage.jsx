@@ -19,20 +19,21 @@ function EventPage() {
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem('favoritter')) || [];
     setFavorites(saved);
-
+const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
     const fetchData = async () => {
       try {
         // Fetch main event
         const eventRes = await fetch(
-          `https://corsproxy.io/?https://app.ticketmaster.com/discovery/v2/events/${id}.json?apikey=${API_KEY}`
+  `/discovery/v2/events/${id}.json?apikey=${API_KEY}`
         );
         const eventData = await eventRes.json();
         setEvent(eventData);
+         await delay(300);
 
         // Fetch related events
         const keyword = encodeURIComponent(eventData.name.split(' ')[0]);
         const relatedRes = await fetch(
-          `https://corsproxy.io/?https://app.ticketmaster.com/discovery/v2/events.json?apikey=${API_KEY}&keyword=${keyword}&size=4`
+  `/discovery/v2/events.json?apikey=${API_KEY}&keyword=${keyword}&size=4`
         );
         const relatedData = await relatedRes.json();
         setRelatedEvents(relatedData._embedded?.events?.filter(e => e.id !== id) || []);

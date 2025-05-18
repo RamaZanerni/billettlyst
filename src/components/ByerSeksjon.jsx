@@ -14,9 +14,8 @@ function ByerSeksjon() {
     const hentArrangementer = async () => {
       setLoading(true);
       try {
-        const res = await fetch(
-          `https://corsproxy.io/?https://app.ticketmaster.com/discovery/v2/events.json?apikey=${API_KEY}&city=${valgtBy}&size=8`
-        );
+      const res = await fetch(`/discovery/v2/events.json?apikey=${API_KEY}&city=${valgtBy}&size=8`);
+
         const data = await res.json();
         setArrangementer(data._embedded?.events || []);
       } catch (error) {
